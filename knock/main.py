@@ -1,5 +1,6 @@
 import gettext
 import itertools
+import locale
 import os
 import re
 import sys
@@ -66,6 +67,7 @@ def main():
     app_dir = os.path.dirname(os.path.realpath(__file__))
 
     # Setup gettext
+    locale.setlocale(locale.LC_ALL, '')
     gettext.install('knock', os.path.join(app_dir, 'locales'), True)
 
     # Setup the Python path
