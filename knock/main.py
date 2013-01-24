@@ -68,6 +68,10 @@ def main():
 
     # Setup gettext
     locale.setlocale(locale.LC_ALL, '')
+    if sys.platform.startswith('win'):
+        if os.getenv('LANG') is None:
+            lang, enc = locale.getlocale()
+            os.environ['LANG'] = lang
     gettext.install('knock', os.path.join(app_dir, 'locales'), True)
 
     # Setup the Python path
