@@ -62,7 +62,8 @@ class PortKnocker(object):
                                 hostname=host))
             if len(addresses) > 1:
                 print >>sys.stderr, _(u"Hostname {hostname} resolved to "
-                                      "multiple addresses:")
+                                      "multiple addresses:").format(
+                                              hostname=host)
                 for i, info in enumerate(addresses):
                     af, socktype, proto, canonname, sa = info
                     if i == 0:
