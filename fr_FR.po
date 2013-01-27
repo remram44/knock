@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: remirampin@gmail.com\n"
-"POT-Creation-Date: 2013-01-23 00:19-0500\n"
-"PO-Revision-Date: 2013-01-23 20:36-0500\n"
+"POT-Creation-Date: 2013-01-27 12:35-0500\n"
+"PO-Revision-Date: 2013-01-27 12:47-0500\n"
 "Last-Translator: Remi Rampin <remirampin@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -17,33 +17,157 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: knock\main.py:40
-msgid "Port sequence goes backwards: {0}-{1}"
-msgstr "La séquence de ports est à l'envers : {0}-{1}"
-
-#: knock\main.py:45
-msgid "Port spec couldn't be parsed"
-msgstr "Les ports n'ont pas été compris"
-
-#: knock\main.py:52
-msgid "ssh command was not specified"
-msgstr "La commande ssh n'était pas indiquée"
-
-#: knock\main.py:60
-msgid ""
-"knock [port] [port-port] [port] [...] ssh [...]\n"
-"Tests that the given ports on the remote side are accessible from our side.\n"
+#: knock\app.py:32
+msgid "Coudldn't guess local hostname from SSH environment -- please use -l"
 msgstr ""
-"knock [port] [port-port] [port] [...] ssh [...]\n"
-"Teste si les ports donnés sur le serveur sont accessible depuis notre côté.\n"
+"Impossible de deviner l'adresse locale depuis l'environnement SSH -- merci\n"
+"d'utiliser -l"
 
-#: knock\main.py:79
-msgid "Couldn't setup the Python path\n"
-msgstr "N'a pas pu régler le path Python\n"
+#: knock\app.py:65
+msgid "Option -s requires an argument"
+msgstr "L'option -s requiert un argument"
 
-#: knock\main.py:86
+#: knock\app.py:67
+msgid "Option -s was specified more than once"
+msgstr "L'option -s a été passée plusieurs fois"
+
+#: knock\app.py:73
+msgid "Option -r requires an argument"
+msgstr "L'option -r requiert un argument"
+
+#: knock\app.py:75
+msgid "Option -r was specified more than once"
+msgstr "L'option -r a été passée plusieurs fois"
+
+#: knock\app.py:81
+msgid "Option -l requires an argument"
+msgstr "L'option -l requiert un argument"
+
+#: knock\app.py:83
+msgid "Option -l was specified more than once"
+msgstr "L'option -l a été passée plusieurs fois"
+
+#: knock\app.py:101
+msgid "ssh arguments were not specified"
+msgstr "Les arguments de ssh n'ont pas été indiqués"
+
+#: knock\app.py:109
+msgid "Couldn't guess remote hostname from SSH command -- please use -r"
+msgstr ""
+"Impossible de deviner l'adresse distante depuis la commande SSH -- merci\n"
+"d'utiliser -r"
+
+#: knock\app.py:123
+msgid "Couldn't start the ssh process"
+msgstr "Impossible de lancer le programme ssh"
+
+#: knock\app.py:136
+msgid ""
+"knock [options] [ports] [...] [user@host] [path/to/knock]\n"
+"\n"
+"  Tests for port accessibility between here and the remote machine.\n"
+"\n"
+"  Ports can have the format '42' or '41-47'; a '-' prefix means to test the\n"
+"local port from the remote side.\n"
+"\n"
+"Recognized options:\n"
+"  -h\n"
+"    Prints this help and exits\n"
+"  -s <ssh_cmd>\n"
+"    Sets the SSH binary (default: 'ssh')\n"
+"  -r <hostname>\n"
+"    Sets the hostname or address of the remote machine that we'll use to "
+"test\n"
+"    remote ports\n"
+"  -l <hostname>\n"
+"    Sets the hostname or address of this machine that will be used by the\n"
+"    remote to test local ports\n"
+msgstr ""
+"knock [options] [ports] [...] [user@host] [chemin/vers/knock]\n"
+"\n"
+"  Teste l'accessibilité des ports entre ici et la machine distante.\n"
+"\n"
+"  Les ports peuvent avoir le format '42' ou '41-47'; un prefix '-' indique "
+"de\n"
+"tester le port local depuis la machine distante.\n"
+"\n"
+"Options reconnues :\n"
+"  -h\n"
+"    Affiche cette aide et termine\n"
+"  -s <ssh_cmd>\n"
+"    Change le binaire SSH (par défaut : 'ssh')\n"
+"  -r <nom d'hôte>\n"
+"    Définit le nom de domaine ou l'adresse de la machine distante qui sera\n"
+"    utilisé pour tester les ports distants\n"
+"  -l <nom d'hôte>\n"
+"    Définit le nom de domaine ou l'adresse de cette machine qui sera "
+"utilisé\n"
+"    par la machine distante pour tester les ports locaux\n"
+
+#: knock\app.py:158
 msgid "Error: "
 msgstr "Erreur : "
 
-#~ msgid "knock [port] [port-port] [port] [...] ssh [...]\n"
-#~ msgstr "knock [port] [port-port] [port] [...] ssh [...]\n"
+#: knock\knocker.py:61
+msgid "Couldn't lookup {hostname}"
+msgstr "Impossible de résoudre {hostname}"
+
+#: knock\knocker.py:64
+msgid "Hostname {hostname} resolved to multiple addresses:"
+msgstr "Le nom {hostname} a résolu en plusieurs adresses :"
+
+#: knock\knocker.py:69
+msgid "(selected)"
+msgstr "(sélectionné)"
+
+#: knock\knocker.py:80
+msgid ""
+"\n"
+"Results for ports scanned on the remote machine:"
+msgstr ""
+"\n"
+"Résultats pour les ports scannés sur la machine distante :"
+
+#: knock\knocker.py:83
+msgid ""
+"\n"
+"Results for ports scanned on the local machine:"
+msgstr ""
+"\n"
+"Résultats pour les ports scannés sur la machine locale :"
+
+#: knock\knocker.py:146
+msgid "open"
+msgstr "ouvert"
+
+#: knock\knocker.py:149
+msgid "closed"
+msgstr "fermé"
+
+#: knock\knocker.py:152
+msgid "remote skipped"
+msgstr "sauté par le serveur"
+
+#: knock\knocker.py:155
+msgid "local error"
+msgstr "erreur locale"
+
+#: knock\knocker.py:158
+msgid "Port        Status"
+msgstr "Port        Statut"
+
+#: knock\knocker.py:164
+msgid "Total: {open} open, {closed} closed"
+msgstr "Total : {open} ouverts, {closed} fermés"
+
+#: knock\main.py:22
+msgid "Couldn't setup the Python path\n"
+msgstr "N'a pas pu régler le path Python\n"
+
+#: knock\ports.py:49
+msgid "Port sequence goes backwards: {0}-{1}"
+msgstr "La séquence de ports est à l'envers : {0}-{1}"
+
+#: knock\ports.py:54
+msgid "Port spec couldn't be parsed"
+msgstr "Les ports n'ont pas été compris"
