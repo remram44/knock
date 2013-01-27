@@ -1,5 +1,3 @@
-import gettext
-import locale
 import os
 import re
 import sys
@@ -33,13 +31,15 @@ def run():
                 raise ConfigurationError(_(
                         u"Coudldn't guess local hostname from SSH environment "
                         "-- please use -l"))
-                i = 2
+            i = 2
         rports = PortList()
         while i < argc:
             rports.add(sys.argv[i])
+            i += 1
         remote = Remote(sys.stdin, sys.stdout)
         runner = PortKnocker(remote, rev_host)
         runner.run(False, rports)
+        remote.close()
         sys.exit(0)
 
     # Parse the command line
@@ -61,15 +61,19 @@ def run():
             usage(sys.stdout)
             sys.exit(0)
         elif arg == '-s':
-            if ssh_prog is not None:
+            if i + 1 >= argc:
+                raise ConfigurationError(_(u"Option -s requires an argument"))
+            elif ssh_prog is not None:
                 raise ConfigurationError(_(u"Option -s was specified more "
                                            "than once"))
+            ssh_prog = sys.argv[i + 1]
+            i += 1
         elif arg == '-r':
             if i + 1 >= argc:
                 raise ConfigurationError(_(u"Option -r requires an argument"))
             elif host is not None:
                 raise ConfigurationError(_(u"Option -r was specified more "
-                                          "than once"))
+                                           "than once"))
             host = sys.argv[i + 1]
             i += 1
         elif arg == '-l':
@@ -77,7 +81,7 @@ def run():
                 raise ConfigurationError(_(u"Option -l requires an argument"))
             elif host is not None:
                 raise ConfigurationError(_(u"Option -l was specified more "
-                                          "than once"))
+                                           "than once"))
             rev_host = sys.argv[i + 1]
             i += 1
         else:
@@ -91,6 +95,7 @@ def run():
                 # Not ports: assume beginning of remaining parameters
                 ssh_args = sys.argv[i:]
                 break
+        i += 1
 
     if not ssh_args:
         raise ConfigurationError(_(u"ssh arguments were not specified"))
@@ -123,6 +128,7 @@ def run():
     # Run
     runner = PortKnocker(remote, host)
     runner.run(True, lports)
+    remote.close()
     sys.exit(0)
 
 

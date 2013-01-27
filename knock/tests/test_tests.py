@@ -1,4 +1,4 @@
-"""Tests for the dat.gui package.
+"""Tests for the knock package.
 
 """
 
@@ -6,6 +6,6 @@
 import unittest
 
 
-class Test_gui(unittest.TestCase):
+class Test(unittest.TestCase):
     def test_tests(self):
         self.assertTrue(True)

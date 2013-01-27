@@ -14,28 +14,30 @@ class Remote(object):
             raise ValueError("Process: expected argument delim to be a "
                              "single-character string, got %r" % delim)
         self._delim = delim
+        self._closed = False
 
-        self._sendq = queue.Queue()
         self._recvq = queue.Queue()
+        self._sendq = queue.Queue()
 
-        r = Thread(target=self._reading_thread)
-        r.setDaemon(True)
-        r.start()
+        self._r_thread = Thread(target=self._reading_thread)
+        self._r_thread.setDaemon(True) # I don't know how to stop this one
+        self._r_thread.start()
 
-        w = Thread(target=self._writing_thread)
-        w.setDaemon(True)
-        w.start()
-
-    def send_msg(self, msg):
-        self._sendq.put(msg)
+        self._w_thread = Thread(target=self._writing_thread)
+        self._w_thread.start()
 
     def recv_msg(self):
         return self._recvq.get()
 
+    def send_msg(self, msg):
+        self._sendq.put(msg)
+
     def _reading_thread(self):
         buf = ''
         while True:
-            data = self._istream.read(64)
+            data = self._istream.read(1)
+            if self._closed or not data:
+                break
             p = data.find(self._delim)
             while p != -1:
                 msg, buf, data = buf + data[:p], '', data[p+1:]
@@ -45,4 +47,15 @@ class Remote(object):
 
     def _writing_thread(self):
         while True:
-            self._ostream.write(self._sendq.get())
+            msg = self._sendq.get()
+            if msg is None:
+                break
+            self._ostream.write(msg + self._delim)
+            self._ostream.flush()
+
+    def close(self):
+        self._closed = True
+        # No idea how to stop this one...
+
+        self._sendq.put(None)
+        self._w_thread.join()

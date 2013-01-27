@@ -1,4 +1,43 @@
+import select
 import socket
+import sys
+
+
+class Listener(object):
+    class Error(Exception):
+        pass
+
+    def __init__(self, port):
+        self._sockets = []
+
+        self._try_listen(socket.AF_INET, port)
+        if socket.has_ipv6:
+            self._try_listen(socket.AF_INET6, port)
+
+        if not self._sockets:
+            raise Listener.Error
+
+    def _try_listen(self, af, port):
+        try:
+            s = socket.socket(af, socket.SOCK_STREAM)
+            s.bind(('', port))
+            s.listen(5)
+            self._sockets.append(s)
+        except:
+            pass
+
+    def accept(self):
+        for s in self._sockets:
+            ready_read, ready_write, errors = select.select(
+                    [s], [], [], 0)
+            if ready_read:
+                c = s.accept()
+                if c is not None:
+                    c[0].close()
+
+    def close(self):
+        for s in self._sockets:
+            s.close()
 
 
 class PortKnocker(object):
@@ -19,21 +58,30 @@ class PortKnocker(object):
                 addresses = None
             if not addresses:
                 raise PortKnocker.HostError(
-                        _(u"Could lookup {hostname}").format(
+                        _(u"Couldn't lookup {hostname}").format(
                                 hostname=host))
             if len(addresses) > 1:
-                print _(u"Hostname {hostname} resolved to multiple addresses:")
-                for i, (af, socktype, proto, canonname, sa) in addresses:
-                    print u"  %s%s" % (
-                            canonname, i == 0 and
-                            u" " + _(u"(selected)")
-                            or u"")
+                print >>sys.stderr, _(u"Hostname {hostname} resolved to "
+                                      "multiple addresses:")
+                for i, info in enumerate(addresses):
+                    af, socktype, proto, canonname, sa = info
+                    if i == 0:
+                        sel = u" " + _(u"(selected)")
+                    else:
+                        sel = u""
+                    print >>sys.stderr, u"  %s%s" % (sa[0], sel)
             self._address = addresses[0]
 
     def run(self, client, ports):
         if client:
-            self._connect()
-            self._listen(ports)
+            r_results = self._connect()
+            l_results = self._listen(ports)
+            if r_results:
+                print _(u"\nResults for ports scanned on the remote machine:")
+                self._show(r_results)
+            if l_results:
+                print _(u"\nResults for ports scanned on the local machine:")
+                self._show(l_results)
         else:
             self._listen(ports)
             self._connect()
@@ -41,26 +89,41 @@ class PortKnocker(object):
     def _listen(self, ports):
         results = []
         for port in ports:
-            # TODO : listen on port
-            self._remote.send_msg('testport %d' % port)
-            rep = self._remote.recv_msg()
-            results.append((port, rep))
-            # TODO : close port
+            try:
+                listen = Listener(port)
+                self._remote.send_msg('testport %d' % port)
+                listen.accept()
+                rep = self._remote.recv_msg()
+                results.append((port, rep))
+                listen.close()
+            except Listener.Error:
+                self._remote.send_msg('skippedport %d' % port)
+                results.append((port, 'error'))
+        self._remote.send_msg('endtests')
         return results
 
     def _connect(self):
         results = []
-        req = self._remote.recv_msg()
-        if req.startswith('testport '):
-            port = int(req[9:])
-            r = self._try_connect(port)
-            results.append((port, r))
-            self._remote.send_msg(r)
+        while True:
+            req = self._remote.recv_msg()
+            if req.startswith('testport '):
+                port = int(req[9:])
+                r = self._try_connect(port)
+                results.append((port, r))
+                self._remote.send_msg(r)
+            elif req.startswith('skippedport '):
+                port = int(req[12:])
+                results.append((port, 'skipped'))
+            elif req == 'endtests':
+                break
         return results
 
     def _try_connect(self, port):
         af, socktype, proto, canonname, sa = self._address
-        # TODO : change port from 42 to port
+
+        # Set port
+        sa = (sa[0], port)
+
         try:
             s = socket.socket(af, socktype, proto)
         except socket.error:
@@ -76,7 +139,7 @@ class PortKnocker(object):
             s.close()
 
     def _show(self, results):
-        total = dict(open=0, closed=0)
+        total = dict(open=0, closed=0, error=0)
         def describe(result):
             if result == 'open':
                 total['open'] += 1
@@ -84,6 +147,14 @@ class PortKnocker(object):
             elif result == 'closed':
                 total['closed'] += 1
                 return _(u"closed")
+            elif result == 'skipped':
+                total['error'] += 1
+                return _(u"remote skipped")
+            elif result == 'error':
+                total['error'] += 1
+                return _(u"local error")
+            else:
+                return repr(result)
         print _(u"Port        Status")
         for port, result in results:
             p = "%d" % port
