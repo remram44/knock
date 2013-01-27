@@ -11,8 +11,9 @@ ports from the remote side; simply prefix the port of port range with a '-'.
 
 # Example
 
-For example, to test that ports 10042-10044 and port 6667 are available on the
-remote host, and that ports 4500-4502 are available on the local host, run:
+For example, to test that ports 10042-10044 and port 6667 on the remote host
+are accessible from the local machine, and that ports 4500-4502 on the local
+host are available from the remote machine, run:
 
     python knock 10042-10044 6667 -4500-4502 remram@example.org /opt/knock
 
@@ -36,3 +37,8 @@ Port        Status
 --------------------
 Total: 3 open, 0 closed
 </pre>
+
+The messages "remote skipped" or "local error" indicate that a port wasn't
+tested because it couldn't be grapped with bind(). This can happen if the port
+is already in use or if the program wasn't allowed to grab it (on most unixes,
+port numbers below 1024 are only available to root).
