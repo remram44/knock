@@ -1,3 +1,4 @@
+import codecs
 import gettext
 import locale
 import sys
@@ -10,6 +11,10 @@ def setup():
     # Setup gettext
     locale.setlocale(locale.LC_ALL, '')
     gettext.install('knock', os.path.join(app_dir, 'locales'), True)
+
+    # Python tends to f*ck up, make sure it doesn't decide to use 'ascii'
+    sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
+    sys.stderr = codecs.getwriter(locale.getpreferredencoding())(sys.stderr)
 
     # Setup the Python path
     try:
