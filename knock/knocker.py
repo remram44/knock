@@ -98,8 +98,12 @@ class PortKnocker(object):
                 results.append((port, rep))
                 listen.close()
             except Listener.Error:
-                self._remote.send_msg('skippedport %d' % port)
-                results.append((port, 'error'))
+                self._remote.send_msg('cantlisten %d' % port)
+                rep = self._remote.recv_msg()
+                if rep == 'open':
+                    results.append((port, rep))
+                else:
+                    results.append((port, 'error'))
         self._remote.send_msg('endtests')
         return results
 
@@ -112,9 +116,15 @@ class PortKnocker(object):
                 r = self._try_connect(port)
                 results.append((port, r))
                 self._remote.send_msg(r)
-            elif req.startswith('skippedport '):
-                port = int(req[12:])
-                results.append((port, 'skipped'))
+            elif req.startswith('cantlisten '):
+                port = int(req[11:])
+                # Try to connect anyway, in case something is listening
+                r = self._try_connect(port)
+                if r == 'open':
+                    results.append((port, r))
+                else:
+                    results.append((port, 'skipped'))
+                self._remote.send_msg(r)
             elif req == 'endtests':
                 break
         return results
