@@ -1,4 +1,4 @@
-Knock: Network Openness Tester
+Knock: Network Openness ChecKer
 
 # Description
 
