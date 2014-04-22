@@ -15,7 +15,7 @@ For example, to test that ports 10042-10044 and port 6667 on the remote host
 are accessible from the local machine, and that ports 4500-4502 on the local
 host are available from the remote machine, run:
 
-    python knock 10042-10044 6667 -4500-4502 remram@example.org /opt/knock
+    python knock 10042-10044 6667 -4500-4502 user@example.org python /opt/knock
 
 It will print out the results on the console:
 

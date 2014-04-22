@@ -133,7 +133,8 @@ def run():
 
 
 def usage(out):
-    out.write(_(u"knock [options] [ports] [...] [user@host] [path/to/knock]\n"
+    out.write(_(u"knock [options] [ports] [...] [user@host] [/usr/bin/python "
+                "path/to/knock]\n"
                 "\n"
                 "  Tests for port accessibility between here and the remote "
                 "machine.\n"
