@@ -23,7 +23,7 @@ class Listener(object):
             s.bind(('', port))
             s.listen(5)
             self._sockets.append(s)
-        except:
+        except socket.error:
             pass
 
     def accept(self):
@@ -139,7 +139,8 @@ class PortKnocker(object):
         finally:
             s.close()
 
-    def _show(self, results):
+    @staticmethod
+    def _show(results):
         total = dict(open=0, closed=0, error=0)
         def describe(result):
             if result == 'open':
