@@ -38,12 +38,11 @@ class Remote(object):
             data = self._istream.read(1)
             if self._closed or not data:
                 break
-            p = data.find(self._delim)
-            while p != -1:
-                msg, buf, data = buf + data[:p], '', data[p+1:]
+            if data == self._delim:
+                msg, buf = buf, ''
                 self._recvq.put(msg)
-                p = data.find(self._delim)
-            buf += data
+            else:
+                buf += data
 
     def _writing_thread(self):
         while True:
