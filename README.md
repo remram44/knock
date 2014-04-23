@@ -7,7 +7,7 @@ Simply put Knock on each side and run it on the local machine -- it will spawn
 its server process on the other side via SSH.
 
 Knock is capable of testing remote ports from the local side but also local
-ports from the remote side; simply prefix the port of port range with a '-'.
+ports from the remote side; simply prefix the port or port range with a '-'.
 
 # Example
 
