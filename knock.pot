@@ -1,14 +1,14 @@
 # Knock: Network Openness Checker.
-# Copyright (C) 2013 Remi Rampin
+# Copyright (C) 2013-2014 Remi Rampin
 # This file is distributed under the same license as the Knock package.
-# Remi Rampin <remirampin@gmail.com>, 2013.
+# Remi Rampin <remirampin@gmail.com>, 2014.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: remirampin@gmail.com\n"
-"POT-Creation-Date: 2013-01-27 12:35-0500\n"
+"POT-Creation-Date: 2014-04-22 23:16-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,49 +17,53 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: knock\app.py:32
-msgid "Coudldn't guess local hostname from SSH environment -- please use -l"
+#: knock/app.py:32
+msgid "Couldn't guess local hostname from SSH environment -- please use -l"
 msgstr ""
 
-#: knock\app.py:65
+#: knock/app.py:65
 msgid "Option -s requires an argument"
 msgstr ""
 
-#: knock\app.py:67
+#: knock/app.py:67
 msgid "Option -s was specified more than once"
 msgstr ""
 
-#: knock\app.py:73
+#: knock/app.py:73
 msgid "Option -r requires an argument"
 msgstr ""
 
-#: knock\app.py:75
+#: knock/app.py:75
 msgid "Option -r was specified more than once"
 msgstr ""
 
-#: knock\app.py:81
+#: knock/app.py:81
 msgid "Option -l requires an argument"
 msgstr ""
 
-#: knock\app.py:83
+#: knock/app.py:83
 msgid "Option -l was specified more than once"
 msgstr ""
 
-#: knock\app.py:101
+#: knock/app.py:101
 msgid "ssh arguments were not specified"
 msgstr ""
 
-#: knock\app.py:109
+#: knock/app.py:109
 msgid "Couldn't guess remote hostname from SSH command -- please use -r"
 msgstr ""
 
-#: knock\app.py:123
+#: knock/app.py:123
 msgid "Couldn't start the ssh process"
 msgstr ""
 
-#: knock\app.py:136
+#: knock/app.py:133
+msgid "Server exited prematurely"
+msgstr ""
+
+#: knock/app.py:141
 msgid ""
-"knock [options] [ports] [...] [user@host] [path/to/knock]\n"
+"knock [options] [ports] [...] [user@host] [/usr/bin/python path/to/knock]\n"
 "\n"
 "  Tests for port accessibility between here and the remote machine.\n"
 "\n"
@@ -80,66 +84,70 @@ msgid ""
 "    remote to test local ports\n"
 msgstr ""
 
-#: knock\app.py:158
+#: knock/app.py:164
 msgid "Error: "
 msgstr ""
 
-#: knock\knocker.py:61
+#: knock/knocker.py:61
+#, python-brace-format
 msgid "Couldn't lookup {hostname}"
 msgstr ""
 
-#: knock\knocker.py:64
+#: knock/knocker.py:64
+#, python-brace-format
 msgid "Hostname {hostname} resolved to multiple addresses:"
 msgstr ""
 
-#: knock\knocker.py:69
+#: knock/knocker.py:70
 msgid "(selected)"
 msgstr ""
 
-#: knock\knocker.py:80
+#: knock/knocker.py:81
 msgid ""
 "\n"
 "Results for ports scanned on the remote machine:"
 msgstr ""
 
-#: knock\knocker.py:83
+#: knock/knocker.py:84
 msgid ""
 "\n"
 "Results for ports scanned on the local machine:"
 msgstr ""
 
-#: knock\knocker.py:146
+#: knock/knocker.py:158
 msgid "open"
 msgstr ""
 
-#: knock\knocker.py:149
+#: knock/knocker.py:161
 msgid "closed"
 msgstr ""
 
-#: knock\knocker.py:152
+#: knock/knocker.py:164
 msgid "remote skipped"
 msgstr ""
 
-#: knock\knocker.py:155
+#: knock/knocker.py:167
 msgid "local error"
 msgstr ""
 
-#: knock\knocker.py:158
+#: knock/knocker.py:170
 msgid "Port        Status"
 msgstr ""
 
-#: knock\knocker.py:164
+#: knock/knocker.py:176
+#, python-brace-format
 msgid "Total: {open} open, {closed} closed"
 msgstr ""
 
-#: knock\main.py:22
+#: knock/main.py:27
 msgid "Couldn't setup the Python path\n"
 msgstr ""
 
-#: knock\ports.py:49
+#: knock/ports.py:49
+#, python-brace-format
 msgid "Port sequence goes backwards: {0}-{1}"
 msgstr ""
 
-#: knock\ports.py:54
+#: knock/ports.py:54
 msgid "Port spec couldn't be parsed"
 msgstr ""

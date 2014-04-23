@@ -29,7 +29,7 @@ def run():
                 rev_host = rev_host.split(' ')[0]
             except KeyError:
                 raise ConfigurationError(_(
-                        u"Coudldn't guess local hostname from SSH environment "
+                        u"Couldn't guess local hostname from SSH environment "
                         "-- please use -l"))
             i = 2
         rports = PortList()
