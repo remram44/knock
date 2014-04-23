@@ -2,7 +2,7 @@ import os
 import re
 import sys
 
-from knock.remote import Remote
+from knock.remote import Remote, EndOfStream
 from knock.knocker import PortKnocker
 from knock.ports import PortList
 import subprocess
@@ -126,10 +126,15 @@ def run():
     remote = Remote(proc.stdout, proc.stdin)
 
     # Run
-    runner = PortKnocker(remote, host)
-    runner.run(True, lports)
-    remote.close()
-    sys.exit(0)
+    try:
+        runner = PortKnocker(remote, host)
+        runner.run(True, lports)
+    except EndOfStream:
+        sys.stderr.write(_(u"Server exited prematurely") + u"\n")
+        sys.exit(1)
+    finally:
+        remote.close()
+        sys.exit(0)
 
 
 def usage(out):

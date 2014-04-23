@@ -2,6 +2,10 @@ import Queue as queue
 from threading import Thread
 
 
+class EndOfStream(Exception):
+    pass
+
+
 class Remote(object):
     def __init__(self, istream, ostream, delim='\n'):
         self._istream = istream
@@ -27,7 +31,10 @@ class Remote(object):
         self._w_thread.start()
 
     def recv_msg(self):
-        return self._recvq.get()
+        msg = self._recvq.get()
+        if msg is None:
+            raise EndOfStream()
+        return msg
 
     def send_msg(self, msg):
         self._sendq.put(msg)
@@ -43,6 +50,7 @@ class Remote(object):
                 self._recvq.put(msg)
             else:
                 buf += data
+        self._recvq.put(None)
 
     def _writing_thread(self):
         while True:
